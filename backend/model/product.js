@@ -31,11 +31,11 @@ const productSchema = new mongoose.Schema({
     {
       public_id: {
         type: String,
-        required: true,
+        //required: true,
       },
       url: {
         type: String,
-        required: true,
+        //required: true,
       },
     },
   ],
@@ -64,11 +64,11 @@ const productSchema = new mongoose.Schema({
   },
   shopId: {
     type: String,
-    required: true,
+    //required: true,
   },
   shop: {
     type: Object,
-    required: true,
+    //required: true,
   },
   sold_out: {
     type: Number,

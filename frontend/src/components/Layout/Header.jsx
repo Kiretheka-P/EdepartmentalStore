@@ -57,10 +57,14 @@ const Header = ({ activeHeading }) => {
         <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
-              <img
+              {/* <img
                 src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
-              />
+                alt="Logo"
+              /> */}
+              <h6 className="text-blue-500 font-bold text-3xl">
+                SRI SELVAKUMARAN STORES
+              </h6>
+
             </Link>
           </div>
           {/* search box */}
@@ -97,14 +101,14 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
-          <div className={`${styles.button}`}>
-            <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+          {/* <div className={`${styles.button} bg-white`}>
+            <Link to={`${isSeller ? "/dashboard" : "/shop-login"}`}>
               <h1 className="text-[#fff] flex items-center">
                 {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
                 <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
       <div

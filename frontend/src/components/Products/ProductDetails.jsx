@@ -58,20 +58,54 @@ const ProductDetails = ({ data }) => {
     dispatch(addToWishlist(data));
   };
 
+  // const addToCartHandler = (id) => {
+  //   const isItemExists = cart && cart.find((i) => i._id === id);
+  //   if (isItemExists) {
+  //     toast.error("Item already in cart!");
+  //   } else {
+  //     if (data.stock < 1) {
+  //       toast.error("Product stock limited!");
+  //     } else {
+  //       const cartData = { ...data, qty: count };
+  //       dispatch(addTocart(cartData));
+  //       toast.success("Item added to cart successfully!");
+  //     }
+  //   }
+  // };
+
   const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
+    const isItemExists = cart.find((item) => item._id === id);
+  
     if (isItemExists) {
-      toast.error("Item already in cart!");
-    } else {
-      if (data.stock < 1) {
-        toast.error("Product stock limited!");
+      // Ensure qty exists, otherwise default to 0
+      const existingQty = isItemExists.qty || 0;
+  
+      // Check if adding another unit exceeds stock
+      if (existingQty + 1 > data.stock) {
+        toast.error("Not enough stock available!");
+        return;
       } else {
-        const cartData = { ...data, qty: count };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
+        toast.error("Item is already in cart!");
+        return;
       }
     }
+  
+    // If item is NOT in the cart, check stock before adding
+    if (data.stock < 1) {
+      toast.error("Product stock limited!");
+      return;
+    }
+
+    if (data.stock < count) {
+      toast.error("Not enough stock available!");
+      return;
+    }
+  
+    const cartData = { ...data, qty: 1 };
+    dispatch(addTocart(cartData));
+    toast.success("Item added to cart successfully!");
   };
+  
 
   const totalReviewsLength =
     products &&
@@ -132,12 +166,12 @@ const ProductDetails = ({ data }) => {
                           select === 0 ? "border" : "null"
                         } cursor-pointer`}
                       >
-                        <img
+                        {/* <img
                           src={`${i?.url}`}
                           alt=""
                           className="h-[200px] overflow-hidden mr-3 mt-3"
                           onClick={() => setSelect(index)}
-                        />
+                        /> */}
                       </div>
                     ))}
                   <div
@@ -152,10 +186,10 @@ const ProductDetails = ({ data }) => {
                 <p>{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    {data.discountPrice}$
+                    {data.discountPrice}₹
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.originalPrice ? data.originalPrice + "$" : null}
+                    {data.originalPrice ? data.originalPrice + "₹" : null}
                   </h3>
                 </div>
 
@@ -206,14 +240,14 @@ const ProductDetails = ({ data }) => {
                   </span>
                 </div>
                 <div className="flex items-center pt-8">
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
+                  {/* <Link to={`/shop/preview/${data?.shop._id}`}>
                     <img
                       src={`${data?.shop?.avatar?.url}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
-                  </Link>
-                  <div className="pr-8">
+                  </Link> */}
+                  {/* <div className="pr-8">
                     <Link to={`/shop/preview/${data?.shop._id}`}>
                       <h3 className={`${styles.shop_name} pb-1 pt-1`}>
                         {data.shop.name}
@@ -222,15 +256,15 @@ const ProductDetails = ({ data }) => {
                     <h5 className="pb-3 text-[15px]">
                       ({averageRating}/5) Ratings
                     </h5>
-                  </div>
-                  <div
+                  </div> */}
+                  {/* <div
                     className={`${styles.button} bg-[#6443d1] mt-4 !rounded !h-11`}
                     onClick={handleMessageSubmit}
                   >
                     <span className="text-white flex items-center">
                       Send Message <AiOutlineMessage className="ml-1" />
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -273,7 +307,7 @@ const ProductDetailsInfo = ({
             <div className={`${styles.active_indicator}`} />
           ) : null}
         </div>
-        <div className="relative">
+        {/* <div className="relative">
           <h5
             className={
               "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
@@ -285,8 +319,8 @@ const ProductDetailsInfo = ({
           {active === 2 ? (
             <div className={`${styles.active_indicator}`} />
           ) : null}
-        </div>
-        <div className="relative">
+        </div> */}
+        {/* <div className="relative">
           <h5
             className={
               "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
@@ -298,7 +332,7 @@ const ProductDetailsInfo = ({
           {active === 3 ? (
             <div className={`${styles.active_indicator}`} />
           ) : null}
-        </div>
+        </div> */}
       </div>
       {active === 1 ? (
         <>

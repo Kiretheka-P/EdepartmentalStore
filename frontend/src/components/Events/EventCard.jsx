@@ -10,20 +10,48 @@ const EventCard = ({ active, data }) => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const addToCartHandler = (data) => {
-    const isItemExists = cart && cart.find((i) => i._id === data._id);
+  // const addToCartHandler = (data) => {
+  //   const isItemExists = cart && cart.find((i) => i._id === data._id);
+  //   if (isItemExists) {
+  //     toast.error("Item already in cart!");
+  //   } else {
+  //     if (data.stock < 1) {
+  //       toast.error("Product stock limited!");
+  //     } else {
+  //       const cartData = { ...data, qty: 1 };
+  //       dispatch(addTocart(cartData));
+  //       toast.success("Item added to cart successfully!");
+  //     }
+  //   }
+  // }
+  const addToCartHandler = (id) => {
+    const isItemExists = cart.find((item) => item._id === id);
+  
     if (isItemExists) {
-      toast.error("Item already in cart!");
-    } else {
-      if (data.stock < 1) {
-        toast.error("Product stock limited!");
+      // Ensure qty exists, otherwise default to 0
+      const existingQty = isItemExists.qty || 0;
+  
+      // Check if adding another unit exceeds stock
+      if (existingQty + 1 > data.stock) {
+        toast.error("Not enough stock available!");
+        return;
       } else {
-        const cartData = { ...data, qty: 1 };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
+        toast.error("Item is already in cart!");
+        return;
       }
     }
-  }
+  
+    // If item is NOT in the cart, check stock before adding
+    if (data.stock < 1) {
+      toast.error("Product stock limited!");
+      return;
+    }
+  
+    const cartData = { ...data, qty: 1 };
+    dispatch(addTocart(cartData));
+    toast.success("Item added to cart successfully!");
+  };
+  
   return (
     <div
       className={`w-full block bg-white rounded-lg ${

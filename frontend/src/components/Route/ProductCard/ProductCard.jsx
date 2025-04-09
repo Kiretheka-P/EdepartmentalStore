@@ -47,9 +47,23 @@ const ProductCard = ({ data,isEvent }) => {
 
   const addToCartHandler = (id) => {
     const isItemExists = cart && cart.find((i) => i._id === id);
-    if (isItemExists) {
-      toast.error("Item already in cart!");
+    // if (isItemExists) {
+    //   toast.error("Item already in cart!");
+    // }
+  //   
+  if (isItemExists) {
+    // Ensure qty exists, otherwise default to 0
+    const existingQty = isItemExists.qty || 0;
+
+    // Check if adding another unit exceeds stock
+    if (existingQty + 1 > data.stock) {
+      toast.error("Not enough stock available!");
+      return;
     } else {
+      toast.error("Item is already in cart!");
+      return;
+    }
+  } else {
       if (data.stock < 1) {
         toast.error("Product stock limited!");
       } else {
@@ -71,17 +85,17 @@ const ProductCard = ({ data,isEvent }) => {
             className="w-full h-[170px] object-contain"
           />
         </Link>
-        <Link to={`/shop/preview/${data?.shop._id}`}>
+        {/* <Link to={`/shop/preview/${data?.shop._id}`}>
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
-        </Link>
+        </Link> */}
         <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
           <h4 className="pb-3 font-[500]">
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
 
-          <div className="flex">
+          {/* <div className="flex">
           <Ratings rating={data?.ratings} />
-          </div>
+          </div> */}
 
           <div className="py-2 flex items-center justify-between">
             <div className="flex">
@@ -89,15 +103,23 @@ const ProductCard = ({ data,isEvent }) => {
                 {data.originalPrice === 0
                   ? data.originalPrice
                   : data.discountPrice}
-                $
+                ₹
               </h5>
               <h4 className={`${styles.price}`}>
-                {data.originalPrice ? data.originalPrice + " $" : null}
+                {data.originalPrice ? data.originalPrice + " ₹" : null}
               </h4>
             </div>
-            <span className="font-[400] text-[17px] text-[#68d284]">
-              {data?.sold_out} sold
-            </span>
+            {/* <span className="font-[400] text-[17px] text-[#68d284]">
+              {data?.stock} Stock left
+            </span> */}
+            <span
+            className={`font-[400] text-[17px] ${
+              data?.stock > 0 ? "text-[#68d284]" : "text-red-500"
+            }`}
+          >
+            {data?.stock > 0 ? `${data.stock} Stock left` : "Out of Stock"}
+          </span>
+
           </div>
         </Link>
 
